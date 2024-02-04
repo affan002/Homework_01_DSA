@@ -37,10 +37,20 @@ def main(file_name: str) -> list[list[int]]:
     - 2D array (int): This is the matrix that is obtained after executing filter_image(...)
     """
 
+    # processing inputs
+    with open(f"{file_name}.txt") as file:
+        lines = file.readlines()
+        rows, cols = lines[0].split
+        image = init_matrix
     # Initialize the variables, image and kernel.
-    
-    # Pass those variables to filter_image(...)
-    return filter_image(image, kernel)
-   
+        ind = 1    
+        while len(lines[ind]) == cols:
+            row = lines[ind].split()
 
+    # Pass those variables to filter_image(...)
+    # return filter_image(image, kernel)
+   
     
+    
+
+main("file_name")
