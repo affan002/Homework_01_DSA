@@ -23,7 +23,38 @@ def filter_image(image: list[list[int]], kernel: list[int]) -> list[list[int]]:
     Returns:
     - 2D array (int): This is the matrix that is obtained after performing convolution.
     """
-    pass
+    k = kernel[0]
+    img_rows = len(image)
+    img_cols = len(image[0])
+    kernel = kernel[1:]
+    new_image = init_matrix(img_rows, img_cols)
+    for i in range(img_rows):
+        for j in range(img_cols):
+            pixel = 0
+            r, c = k//2, k//2
+            add = 1
+            for z in range(k//2):
+                pixel += image[i][j] * kernel[r*k + c]
+                if i + add < img_rows:
+                    pixel += image[i+add][j] * kernel[c*k + (r+add)]
+                if i - add >= 0:
+                    pixel += image[i-add][j] * kernel[(c)*k + (r-add)]
+                if j + add < img_cols:
+                    pixel += image[i][j+add] * kernel[(c+add)*k + (r)]
+                if j - add >= 0:
+                    pixel += image[i][j-add] * kernel[(c-add)*k + (r)]
+                if i+add < img_rows and j+add < img_cols:
+                    pixel += image[i+add][j+add] * kernel[(c+add)*k + (r+add)]
+                if i+add < img_rows and j-add >= 0:
+                    pixel += image[i+add][j-add] * kernel[(c-add)*k + (r+add)]
+                if i-add >=0 and j-add >=0:
+                    pixel += image[i-add][j-add] * kernel[(c-add)*k + (r-add)]
+                if i-add >= 0 and j+add < img_cols:
+                    pixel += image[i-add][j+add] * kernel[(c+add)*k + (r-add)]
+            new_image[i][j] = pixel
+            add += 1     
+    return new_image
+
 
 def main(file_name: str) -> list[list[int]]:
     """
@@ -38,19 +69,31 @@ def main(file_name: str) -> list[list[int]]:
     """
 
     # processing inputs
-    with open(f"{file_name}.txt") as file:
+    with open(file_name) as file:
         lines = file.readlines()
-        rows, cols = lines[0].split
-        image = init_matrix
+
+    #storing rows and cols as variable
+    rows, cols = lines[0].split()
+    rows, cols = int(rows), int(cols)
+
     # Initialize the variables, image and kernel.
-        ind = 1    
-        while len(lines[ind]) == cols:
-            row = lines[ind].split()
+    image = init_matrix(rows, cols)    
+    for line_no in range(1,rows + 1):
+        row = lines[line_no].split()
+        image[line_no-1] = row
+
+    
+    kernel = lines[rows + 1].split()
+    for i in range(len(kernel)):
+        kernel[i] = int(kernel[i])
+
+
+    for i in range(rows):
+        for  j in range(cols):
+            image[i][j] = int(image[i][j])
 
     # Pass those variables to filter_image(...)
-    # return filter_image(image, kernel)
+    return filter_image(image, kernel)
    
     
-    
 
-main("file_name")
