@@ -23,14 +23,21 @@ def filter_image(image: list[list[int]], kernel: list[int]) -> list[list[int]]:
     Returns:
     - 2D array (int): This is the matrix that is obtained after performing convolution.
     """
+    # taking the integer defining demensions of kernel out of the array
     k = kernel[0]
     img_rows = len(image)
     img_cols = len(image[0])
     kernel = kernel[1:]
+
+    #initializing new matrix for convoluted image
     new_image = init_matrix(img_rows, img_cols)
+
+    #iterating through the image rows and cols
     for i in range(img_rows):
         for j in range(img_cols):
             pixel = 0
+
+            #storing the centre coordinates of the kernel
             r, c = k//2, k//2
             add = 1
             for z in range(k//2):
@@ -82,12 +89,12 @@ def main(file_name: str) -> list[list[int]]:
         row = lines[line_no].split()
         image[line_no-1] = row
 
-    
+    #converting elements of kernel into integer
     kernel = lines[rows + 1].split()
     for i in range(len(kernel)):
         kernel[i] = int(kernel[i])
 
-
+    # converting the matrix image into integer
     for i in range(rows):
         for  j in range(cols):
             image[i][j] = int(image[i][j])
