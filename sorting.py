@@ -14,10 +14,11 @@ def length(arr: list[int]) -> int:
     A function that takes a single-dimensional array, arr, as an argument and returns the count of valid data items in it, i.e., the non-None values.
     """
     len = 0
-    ind = 0
-    while arr[ind] != None:
+    for i in arr:
+        if i == None:
+            break
         len+=1
-        ind+=1
+    
     
     return len
 
@@ -102,6 +103,6 @@ def main(filename) -> list[list[int]]:
 
     return arr
 
-print(main("sorting01.txt"))
+# print(main("sorting01.txt"))
 
     
