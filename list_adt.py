@@ -135,7 +135,7 @@ def insert_last(e, listADT):
     len = listADT["n"]
     size = listADT["size"]
     
-    listADT[(i + len) % size] = e
+    listADT["data"][(i + len) % size] = e
     listADT["n"] += 1
 
 def remove_last(listADT):
@@ -152,7 +152,8 @@ def remove_last(listADT):
     len = listADT["n"]
     size = listADT["size"]
     
-    out = listADT["data"][((i + len) % size) - 1] 
+    out = listADT["data"][((i + len) % size) - 1]
+    listADT["data"][((i + len) % size) - 1] = None
     listADT["n"] -= 1
     return out
 
