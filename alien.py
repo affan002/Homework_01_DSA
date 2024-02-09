@@ -1,6 +1,6 @@
 import list_adt as listadt
 
-def create_alien() -> dict("messages", any):
+def create_alien(first_S) -> dict:
     """
     Creates an 'alien' dictionary with a list to store messages.
     You can add other attributes if required
@@ -11,10 +11,11 @@ def create_alien() -> dict("messages", any):
         'messages': listadt.create_list(100)    # List to store messages with a maximum capacity of 100
     }
     """
-    messages = {"messages":listadt.create_list(100)}
-
+    return {"messages": listadt.create_list(100),
     # provide other required implementation here
-    pass
+            "min_S": first_S,
+             "max_S": first_S,
+             "last_ind": 1}
 
 def add(seq: int, msg: str, alienList: dict):
     """
@@ -25,7 +26,15 @@ def add(seq: int, msg: str, alienList: dict):
     """
 
     # provide implementation here
-    pass
+    if seq >= alienList["max_S"]:
+        listadt.insert_last(msg, alienList["messages"])
+        alienList["max_S"] = seq
+        alienList["last_ind"] = 1
+    elif seq <= alienList["min_S"]:
+        listadt.insert_first(msg, alienList["messages"])
+        alienList["min_S"] = seq
+        alienList["last_ind"] = -1
+    
 
 def delete(seq: int, msg: str, alienList: dict):
     """
@@ -37,8 +46,10 @@ def delete(seq: int, msg: str, alienList: dict):
     """
 
     # provide implementation here
-    pass
-
+    if alienList["last_ind"] == 1:
+        listadt.remove_last(alienList["messages"])    
+    else:
+        listadt.remove_first(alienList["messages"])
 def get_messages(alienList: dict) -> list[str]:
     """
 
@@ -50,7 +61,13 @@ def get_messages(alienList: dict) -> list[str]:
     """
 
     # provide implementation here
-    pass
+    n = alienList["messages"]["n"]
+    new_lst = [None for i in range(n)]
+    for i in range(n):
+        element = listadt.remove_first(alienList["messages"])
+        new_lst[i] = element
+
+    return new_lst
 
 
 def main(filename) -> list[str]:
@@ -71,11 +88,39 @@ def main(filename) -> list[str]:
     Returns:
     A list representing the conversation obtained from the file.
     """
-    
-    messages = create_alien()
 
     # Provide your implementation here
 
-    output = get_messages(messages)
-    return(output)
+    # reading the txt file
+    with open(filename) as file:
+        lines = file.readlines()
 
+    first_lst = lines[0].split()
+    
+    messages = create_alien(int(first_lst[0]))
+
+    add(int(first_lst[0]), first_lst[1], messages)
+    for i in range(1, len(lines)):
+        row_lst = lines[i].split()
+        S = int(row_lst[0])
+        if len(row_lst) == 2:
+            M = row_lst[1]
+        else:
+            M = ""
+
+        if S > 0:
+            add(S, M, messages)
+
+        elif S < 0:
+            delete(S, M, messages)
+
+        else:
+            break
+        
+    out_lst = get_messages(messages)
+    output = ""
+    for i in out_lst:
+        output += (i + " ")
+    return(output[:-1])
+
+# print(main("alien02.txt"))
