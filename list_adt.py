@@ -153,7 +153,6 @@ def remove_last(listADT):
     size = listADT["size"]
     
     out = listADT["data"][((i + len) % size) - 1]
-    listADT["data"][((i + len) % size) - 1] = None
     listADT["n"] -= 1
     return out
 

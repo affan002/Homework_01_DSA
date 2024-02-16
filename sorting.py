@@ -52,7 +52,7 @@ def insertion_sort(arr: list[int]) -> None:
         arr[j+1] = temp
 
 
-def partition_and_prevail(arr: list[list[int]]) -> None:
+def partition_and_prevail(arr: list[int]) -> None:
     """
     A void function that takes the array to be sorted as an argument
     and applies the “Partition and Prevail” algorithm to sort the valid

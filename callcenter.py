@@ -38,7 +38,7 @@ def is_full(queue: dict) -> bool:
     Parameters: queue - a dictionary representing the queue.
     Return: True if the queue is full, False otherwise.
     """
-    pass
+    return queue['n'] == queue['size']
 
 # Check if the queue is empty
 def is_empty(queue: dict) -> bool:
@@ -47,7 +47,8 @@ def is_empty(queue: dict) -> bool:
     Parameters: queue - a dictionary representing the queue.
     Return: True if the queue is empty, False otherwise.
     """
-    pass
+    return queue['n'] == 0
+    
 
 # Add an element to the rear of the queue
 def enqueue(queue: dict, item):
@@ -55,7 +56,16 @@ def enqueue(queue: dict, item):
     Description: Adds an element with the value 'val' to the rear of the queue.
     Parameters: queue - a dictionary representing the queue, val - the value to be added to the queue.
     """
-    pass
+    if is_full(queue):
+        raise Exception("Queue is full")
+    
+    rear = queue['rear']
+    queue['rear'] = (rear + 1) % queue['size']
+    queue['n'] += 1 
+    queue['data'][queue['rear']] = item
+
+    if queue['n'] == 1:
+        queue['front'] = queue['rear']
 
 # Remove and return the element from the front of the queue
 def dequeue(queue: dict) :
@@ -64,7 +74,14 @@ def dequeue(queue: dict) :
     Parameters: queue - a dictionary representing the queue.
     Return: The element from the front of the queue.
     """
-    pass
+    if is_empty(queue):
+        raise Exception('Queue is empty')
+    
+    front = queue['front']
+    out = queue['data'][front]
+    queue['front'] = (front + 1) % queue['size']
+    queue['n'] -= 1
+    return out 
 
 # Return the element at the front of the queue without removing it
 def peek(queue: dict):
@@ -73,7 +90,7 @@ def peek(queue: dict):
     Parameters: queue - a dictionary representing the queue.
     Return: The element at the front of the queue.
     """
-    pass
+    return queue['data'][queue['front']]
 
 # Add an element with priority to the priority queue
 def enqueue_priority(priority_queue: dict, item, priority: int):
@@ -82,7 +99,19 @@ def enqueue_priority(priority_queue: dict, item, priority: int):
     Parameters: queue - a dictionary representing the priority queue, val - the value to be added to the queue,
                 priority - the priority of the element.
     """
-    pass
+    if is_full(priority_queue):
+        raise Exception("Queue is full")
+    
+    rear = priority_queue['rear']
+    priority_queue['rear'] = (rear + 1) % priority_queue['size']
+    priority_queue['n'] += 1 
+    priority_queue['data'][priority_queue['rear']] = item
+
+    if priority_queue['n'] == 1:
+        priority_queue['front'] = priority_queue['rear']
+
+    
+    
 
 # Remove and return the element with the minimum priority from the priority queue
 def dequeue_min_priority(priority_queue: dict):
@@ -91,8 +120,8 @@ def dequeue_min_priority(priority_queue: dict):
     Parameters: queue - a dictionary representing the priority queue.
     Return: The element with the minimum priority from the priority queue.
     """
-    pass
-
+    
+    
 # Return the element with the minimum priority from the priority queue without removing it
 def peek_min_priority(priority_queue: dict):
     """
@@ -100,7 +129,7 @@ def peek_min_priority(priority_queue: dict):
     Parameters: queue - a dictionary representing the priority queue.
     Return: The element with the minimum priority from the priority queue.
     """
-    pass
+    
 
 
 def CallSimulator(callQueue, agentQueue) -> dict:

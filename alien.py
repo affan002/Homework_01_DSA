@@ -12,10 +12,9 @@ def create_alien(first_S) -> dict:
     }
     """
     return {"messages": listadt.create_list(100),
-    # provide other required implementation here
             "min_S": first_S,
-             "max_S": first_S,
-             "last_ind": 1}
+            "max_S": first_S,
+            "last_ind": 1}
 
 def add(seq: int, msg: str, alienList: dict):
     """
@@ -25,12 +24,16 @@ def add(seq: int, msg: str, alienList: dict):
     - alienList: The 'alien' dictionary containing the messages list.
     """
 
-    # provide implementation here
+    # checks if seq number is greater than the maximum sequence number received so far
     if seq >= alienList["max_S"]:
+        # inserts the msg at the end of the deque structure
         listadt.insert_last(msg, alienList["messages"])
         alienList["max_S"] = seq
         alienList["last_ind"] = 1
+
+    # checks if it is less than the minimum sequence number received so far 
     elif seq <= alienList["min_S"]:
+        # inserts the message at the beginning of the deque structure
         listadt.insert_first(msg, alienList["messages"])
         alienList["min_S"] = seq
         alienList["last_ind"] = -1
@@ -45,11 +48,13 @@ def delete(seq: int, msg: str, alienList: dict):
     - alienList: The 'alien' dictionary containing the messages list.
     """
 
-    # provide implementation here
+    
     if alienList["last_ind"] == 1:
         listadt.remove_last(alienList["messages"])    
     else:
         listadt.remove_first(alienList["messages"])
+
+
 def get_messages(alienList: dict) -> list[str]:
     """
 
@@ -63,7 +68,10 @@ def get_messages(alienList: dict) -> list[str]:
     # provide implementation here
     n = alienList["messages"]["n"]
     new_lst = [None for i in range(n)]
+
+    # iterates n times 
     for i in range(n):
+        # removes the first element and adds into a new list
         element = listadt.remove_first(alienList["messages"])
         new_lst[i] = element
 
@@ -89,17 +97,19 @@ def main(filename) -> list[str]:
     A list representing the conversation obtained from the file.
     """
 
-    # Provide your implementation here
-
     # reading the txt file
     with open(filename) as file:
         lines = file.readlines()
 
+    # process the first message
     first_lst = lines[0].split()
     
     messages = create_alien(int(first_lst[0]))
 
+    # add the first message into the deque-structure
     add(int(first_lst[0]), first_lst[1], messages)
+
+    # iterate over all the other messages 
     for i in range(1, len(lines)):
         row_lst = lines[i].split()
         S = int(row_lst[0])
@@ -123,4 +133,3 @@ def main(filename) -> list[str]:
         output += (i + " ")
     return(output[:-1])
 
-# print(main("alien02.txt"))
